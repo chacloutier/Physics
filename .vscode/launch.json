@@ -7,8 +7,13 @@
 
     "version": "0.2.0",
     "configurations": [
-        
-
+        {
+            "type": "java",
+            "name": "Launch App",
+            "request": "launch",
+            "mainClass": "App",
+            "projectName": "Physics_7cb15cd0"
+        },
         {
             "type": "java",
             "name": "Launch Current File",

@@ -14,7 +14,7 @@ import javafx.util.Duration;
 
 
 //git add .
-//git commit m- "message"
+//git commit -m "message"
 //git push
 
 //git pull
