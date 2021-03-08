@@ -13,16 +13,9 @@
             "type": "java",
             "name": "Launch App",
             "request": "launch",
-            "mainClass": "App",
-            "projectName": "Physics_7cb15cd0"
-        },
-        {
-            "type": "java",
-            "name": "Launch App",
-            "request": "launch",
             "vmArgs": "--module-path ./lib/javafx-sdk-15/lib --add-modules javafx.controls,javafx.fxml,javafx.graphics",
             "mainClass": "App",
-            "projectName": "Physics_50c88c72"
+            "projectName": "Physics_7cb15cd0"
         },
         {
             "type": "java",
