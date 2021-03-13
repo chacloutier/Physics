@@ -30,28 +30,31 @@ public class App extends Application {
       scene.setFill(Color.BLACK);
       primaryStage.setScene(scene);
       primaryStage.show();
-      // Circle c = new Circle(100, 300, 16, Color.AQUA);
-      // Line l = new Line(100, 300, 500, 300);
-      // l.setStroke(Color.AQUA);
-      // group.getChildren().addAll(c, l);
-      // final Timeline timeline = new Timeline();
-      // timeline.setCycleCount(Timeline.INDEFINITE);
-      // timeline.setAutoReverse(false);
-      // KeyValue xKV = new KeyValue(c.centerXProperty(), 500); // angle
-      // KeyValue yKV = new KeyValue(c.centerYProperty(), 100, new Interpolator() { // angle
-      //    @Override
-      //    protected double curve(double t) {
-      //       parabolicMotion pm = new parabolicMotion();
-      //       double a = pm.calculA();
-      //       double b = pm.calculB();
-      //       double c = pm.calculC();
 
-      //       return a * Math.pow((t - b), 2) + c; // parabole
-      //    }
-      // });
-      // KeyFrame xKF = new KeyFrame(Duration.millis(2000), xKV); // temps
-      // KeyFrame yKF = new KeyFrame(Duration.millis(2000), yKV); // temps
-      // timeline.getKeyFrames().addAll(xKF, yKF);
-      // timeline.play();
+
+   /*   parabolicMotion pm = new parabolicMotion();
+       Circle c = new Circle(100, 300, 16, Color.AQUA);
+       Line l = new Line(100, 300, 500, 300);
+       l.setStroke(Color.AQUA);
+       group.getChildren().addAll(c, l);
+       final Timeline timeline = new Timeline();
+       timeline.setCycleCount(Timeline.INDEFINITE);
+       timeline.setAutoReverse(false);
+       KeyValue xKV = new KeyValue(c.centerXProperty(), 500); // angle
+       KeyValue yKV = new KeyValue(c.centerYProperty(), 100, new Interpolator() { // angle
+          @Override
+          protected double curve(double t) {
+             
+             double a = pm.calculA();
+             double b = pm.calculB();
+             double c = pm.calculC();
+
+             return a * Math.pow((t - b), 2) + c; // parabole
+          }
+       });
+       KeyFrame xKF = new KeyFrame(Duration.millis(pm.calculTime()*1000), xKV); // temps
+       KeyFrame yKF = new KeyFrame(Duration.millis(pm.calculTime()*1000), yKV); // temps
+       timeline.getKeyFrames().addAll(xKF, yKF);
+       timeline.play();*/
    }
 }

@@ -1,21 +1,16 @@
 
 public class parabolicMotion {
-    private double x;
-	private double y;
-	private double initialX;
-	private double initialY;
-	private double angle;
-	private double velocity;
-	private double xVelocity;
-	private double yVelocity;
+    private double x=0;
+	private double y=0;
+	private double initialX=x;
+	private double initialY=y;
+	private double angle =45;
+	private double velocity = 80;
+	private double xVelocity =velocity * Math.cos(Math.toRadians(angle));
+	private double yVelocity= velocity * Math.sin(Math.toRadians(angle));
 	private double time;
-	private double gravity;
-
-
-    
-    
-    public void startingSetup(){
-		x = 0;
+	private double gravity= 9.8;
+	/*	x = 0;
 		y = 0;
 		initialX = x;
 		initialY = y;
@@ -24,18 +19,31 @@ public class parabolicMotion {
 		xVelocity = velocity * Math.cos(Math.toRadians(angle));
 		yVelocity = velocity * Math.sin(Math.toRadians(angle));
 		time = 0;
-        gravity=9.8;
+        gravity= 9.8;
+	*/
+	public double calculTime(){
+		double time=2*velocity*Math.sin(Math.toRadians(angle))/gravity;
+		this.time=time;
+		return time;
 	}
 
 	public double calculA(){
+		double a;
 		return -4;
 	}
 	public double calculB(){
-		return 0.5;
+		double b=(velocity*velocity*Math.pow(Math.sin(Math.toRadians(angle)), 2))/(2*gravity);
+		return b;
 
-	}public double calculC(){
-		return 1;
 	}
+	public double calculC(){
+		double c=initialY+yVelocity*calculTime()/2+gravity/2*Math.pow((calculTime()/2),2);
+		return c;
+	}
+	public double getTime(){
+		return time;
+	}
+	
 
 
     
