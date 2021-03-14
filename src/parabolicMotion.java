@@ -1,11 +1,11 @@
 
 public class parabolicMotion {
-    private double x=0;
-	private double y=0;
+    private double x=100;
+	private double y=100;
 	private double initialX=x;
 	private double initialY=y;
 	private double angle =45;
-	private double velocity = 80;
+	private double velocity = 20;
 	private double xVelocity =velocity * Math.cos(Math.toRadians(angle));
 	private double yVelocity= velocity * Math.sin(Math.toRadians(angle));
 	private double time;
