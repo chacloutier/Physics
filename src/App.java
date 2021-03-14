@@ -32,7 +32,7 @@ public class App extends Application {
       primaryStage.show();
 
 
-   /*   parabolicMotion pm = new parabolicMotion();
+      parabolicMotion pm = new parabolicMotion();
        Circle c = new Circle(100, 300, 16, Color.AQUA);
        Line l = new Line(100, 300, 500, 300);
        l.setStroke(Color.AQUA);
@@ -55,6 +55,6 @@ public class App extends Application {
        KeyFrame xKF = new KeyFrame(Duration.millis(pm.calculTime()*1000), xKV); // temps
        KeyFrame yKF = new KeyFrame(Duration.millis(pm.calculTime()*1000), yKV); // temps
        timeline.getKeyFrames().addAll(xKF, yKF);
-       timeline.play();*/
+       timeline.play();
    }
 }
