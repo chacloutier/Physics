@@ -66,23 +66,24 @@ public class App extends Application {
         });
 
         HBox layout= new HBox();
-        layout.setPrefHeight(50);
-        layout.setPrefWidth(50);
+        
         layout.setSpacing(10);
         layout.setPadding(new Insets(0, 20, 10, 20)); 
+        layout.setPrefSize(50, 50);
         
 
         layout.getChildren().addAll(pb, ip, sp);
         layout.setAlignment(Pos.CENTER);
         
         Scene scene1= new Scene(layout, 1000, 1000);
-        scene1.setFill(Color.BLACK);
+        scene1.setFill(Color.AQUA);
         
-
         stage.setScene(scene1);
         
         stage.setHeight(1000);
         stage.setWidth(1000);
+
+        
         stage.show();
         
     }
