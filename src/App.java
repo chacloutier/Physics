@@ -4,6 +4,7 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Group;
+import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -28,6 +29,10 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
         stage.setTitle("Projectile motion");
+
+        
+  
+        
 
         Display d = new Display();
         stage.setScene(d.getScene());

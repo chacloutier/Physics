@@ -6,14 +6,17 @@ import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.Node;
+import javafx.scene.PerspectiveCamera;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Path;
+import javafx.scene.shape.Sphere;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.text.Font;
@@ -30,7 +33,7 @@ public class Display {
     private parabolicMotion animation = new parabolicMotion(this, formules, inputs);
 
     // Objets affichés
-    private Circle circle;
+    private Sphere sphere;
     private Circle top;
     private Line lh;
     private Line lv;
@@ -104,7 +107,7 @@ public class Display {
         go.setPrefSize(60, 20);
         go.setOnAction(value -> {
             // On efface tout
-            group.getChildren().removeAll(circle, top, lh, lv);
+            group.getChildren().removeAll(sphere, top, lh, lv);
 
             // Création des composantes graphiques
             this.createObjects();
@@ -127,9 +130,11 @@ public class Display {
         clear.setPrefSize(60, 20);
         clear.setOnAction(value -> {
             // On efface tout
-            group.getChildren().removeAll(circle, top, lh, lv);
+            group.getChildren().removeAll(sphere, top, lh, lv);
         });
 
+        
+        
         // Creating a GridPane container pour les fenetres textes et les bouttons
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
@@ -159,13 +164,21 @@ public class Display {
         // Création de la Scene
         scene = new Scene(group, dimensionX, dimensionY);
         scene.setFill(Color.BLACK);
+
+        
     }
 
     private void createObjects() {
         // Création du cercle animé
-        circle = new Circle(getDisplayStartX(), getDisplayStartY(), 8, Color.BURLYWOOD);
+        PhongMaterial material = new PhongMaterial();
+        material.setDiffuseColor(Color.ORANGE);
+        sphere = new Sphere(15);
+        sphere.setTranslateX(getDisplayStartX());
+        sphere.setTranslateY(getDisplayStartY());
+        sphere.setMaterial(material);
+    
 
-        // Création du point somet
+        // Création du point sommet
         top = new Circle(getDisplayStartX(), getDisplayStartY(), 2, Color.RED);
 
         // Création de la ligne horizontal
@@ -176,7 +189,18 @@ public class Display {
         lv = new Line(getDisplayEndX(), getDisplayStartY(), getDisplayEndX(), getDisplayEndY());
         lv.setStroke(Color.RED);
 
-        group.getChildren().addAll(circle, top, lh, lv);
+
+       /* PerspectiveCamera camera = new PerspectiveCamera(true);
+
+        camera.setTranslateZ(-1000);
+        camera.setTranslateX(1000);
+        camera.setNearClip(0.1);
+        camera.setFarClip(2000.0);
+        camera.setFieldOfView(45);
+        */
+
+
+        group.getChildren().addAll(sphere, top, lh, lv);
     }
 
     // Pour avoir le 0 en Y en bas de l'ecran
@@ -265,7 +289,7 @@ public class Display {
     }
 
     public Node getNode() {
-        return circle;
+        return sphere;
     }
 
     public Scene getScene() {

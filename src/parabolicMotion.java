@@ -64,6 +64,6 @@ public class parabolicMotion {
 
       pathTransition.setPath(path);
       pathTransition.play();
-
+	  
    }
 }
