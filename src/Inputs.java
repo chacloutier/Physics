@@ -12,7 +12,7 @@ public class Inputs {
     private TextField[] textFields = new TextField[5];
 
     // Valeur par defaut
-    double[] parametres = { 50, 9.8, 45, 10, 4 };
+    double[] parametres = { 100, 20, 80, 5, 2 };
 
     private void setValue(int Indx) {
         try {

@@ -61,7 +61,7 @@ public class App extends Application {
             ip.setPrefSize(250, 20);
             ip.setOnAction(value -> {
             stage.setTitle("Incline Plane");
-
+            
             stage.show();
         });
 
