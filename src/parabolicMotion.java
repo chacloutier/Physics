@@ -1,7 +1,5 @@
 
-import javafx.animation.PathTransition;
-import javafx.scene.shape.Path;
-import javafx.util.Duration;
+import javafx.animation.SequentialTransition;
 
 public class parabolicMotion {
    private Display display;
@@ -16,19 +14,15 @@ public class parabolicMotion {
 
    public void affichage() {
       boolean noExit = true; // Si on veut pas que la balle ne dépasse pas les limites
-
       int resolution = (int) inputs.getValue(Inputs.resolutionIdx); // Nombre de point par seconde
-
-      Path path = new Path(); // Pour définir le tracé de l'objet
-      display.addMoveTo(path, 0, 0);
 
       // Initialisation des variables avant d'entrer dans la boucle
       boolean stop = false; // Si on sort du display, on arrête la boucle
       double maxTime = formules.getTotTime(); // Temps max ou le moment où l'on sort du display / de la boucle
       int maxIndex = (int) (maxTime * resolution); // MaxIndex de la boucle - ici seulement pour faciliter la lecture
+      double slice = maxTime * 1000 / maxIndex; // Tranche de temps en milliseconde
 
-      double x0 = 0;
-      double y0 = 0;
+      Trajet trajet = new Trajet(inputs, slice);
 
       // Construction du tracé (path) de la trajectoire
       for (int i = 1; i <= maxIndex && !stop; i++) {
@@ -43,27 +37,13 @@ public class parabolicMotion {
          }
 
          if (!stop) {
-            display.addDot(x,y);
-            display.addLineTo(path, x, y);
-
-            // display.move(x0, y0, x, y, maxTime*1000/resolution);
-
-            x0 = x;
-            y0 = y;
-
+            display.addDot(x, y); // Ajoute les points du tracé
+            trajet.add(x, y);
          }
       }
 
-      PathTransition pathTransition = new PathTransition();
-      pathTransition.setDuration(Duration.millis(maxTime*1000));
-      pathTransition.setNode(display.getNode());
-      pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-      pathTransition.setCycleCount(PathTransition.INDEFINITE);
-      pathTransition.setCycleCount(1); 
-      pathTransition.setAutoReverse(false);
+      SequentialTransition sequentialTransition = new SequentialTransition(display.getNode(), trajet.getTransitions());
+      sequentialTransition.play();
 
-      pathTransition.setPath(path);
-      pathTransition.play();
-	  
    }
 }

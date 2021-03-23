@@ -42,9 +42,7 @@ public class App extends Application {
             pb.setOnAction(value -> {
             stage.setTitle("Projectile motion");
 
-            Display d = new Display();
-            stage.setScene(d.getScene());
-            stage.show();
+            new Display(stage);
         });
 
         Button sp = new Button("System of pulley");

@@ -1,12 +1,7 @@
-import javafx.util.Duration;
-
-import javafx.animation.PathTransition;
-import javafx.animation.TranslateTransition;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.Node;
-import javafx.scene.PerspectiveCamera;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -15,18 +10,17 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Path;
 import javafx.scene.shape.Sphere;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class Display {
     private Group group;
     private Scene scene;
+    private Stage stage;
 
     private Inputs inputs = new Inputs();
     private Formules formules = new Formules(inputs);
@@ -42,9 +36,11 @@ public class Display {
     private int dimensionY;
     private int marge;
 
-    public Display() {
+    public Display(Stage s) {
         setDimension(1000, 700);
         setMarge(50);
+
+        stage = s;
 
         // Champs Velocite
         Text labelV = new Text("Velocity");
@@ -115,7 +111,7 @@ public class Display {
             inputs.setValues();
 
             // Titre avec les paramètres
-            String t = "Velo:" + inputs.getValue(Inputs.velocityIdx) + " - Grav:" + inputs.getValue(Inputs.gravityIdx)
+            String t = "Velocity:" + inputs.getValue(Inputs.velocityIdx) + " - Gravity:" + inputs.getValue(Inputs.gravityIdx)
                     + " - Angle:" + inputs.getValue(Inputs.angleIdx);
             titre.setText(t);
 
@@ -133,8 +129,6 @@ public class Display {
             group.getChildren().removeAll(sphere, top, lh, lv);
         });
 
-        
-        
         // Creating a GridPane container pour les fenetres textes et les bouttons
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
@@ -165,18 +159,20 @@ public class Display {
         scene = new Scene(group, dimensionX, dimensionY);
         scene.setFill(Color.BLACK);
 
-        
+        stage.setScene(getScene());
+        stage.show();
     }
 
     private void createObjects() {
         // Création du cercle animé
-        PhongMaterial material = new PhongMaterial();
-        material.setDiffuseColor(Color.ORANGE);
-        sphere = new Sphere(15);
-        sphere.setTranslateX(getDisplayStartX());
-        sphere.setTranslateY(getDisplayStartY());
-        sphere.setMaterial(material);
-    
+        sphere = new Sphere(20);
+        sphere.setLayoutX(getDisplayStartX());
+        sphere.setLayoutY(getDisplayStartY());
+        final PhongMaterial greenMaterial = new PhongMaterial();
+        greenMaterial.setSpecularColor(Color.LIGHTGREEN);
+        greenMaterial.setDiffuseColor(Color.LIGHTGREEN);
+        sphere.setMaterial(greenMaterial);
+
 
         // Création du point sommet
         top = new Circle(getDisplayStartX(), getDisplayStartY(), 2, Color.RED);
@@ -188,17 +184,6 @@ public class Display {
         // Création de la ligne vertical
         lv = new Line(getDisplayEndX(), getDisplayStartY(), getDisplayEndX(), getDisplayEndY());
         lv.setStroke(Color.RED);
-
-
-       /* PerspectiveCamera camera = new PerspectiveCamera(true);
-
-        camera.setTranslateZ(-1000);
-        camera.setTranslateX(1000);
-        camera.setNearClip(0.1);
-        camera.setFarClip(2000.0);
-        camera.setFieldOfView(45);
-        */
-
 
         group.getChildren().addAll(sphere, top, lh, lv);
     }
@@ -247,45 +232,9 @@ public class Display {
                 || (boolean) (y * inputs.getValue(Inputs.zoomIdx) > dimensionY - 2 * marge));
     }
 
-    public void addMoveTo(Path p, double x, double y) {
-        p.getElements().add(new MoveTo(convertToDisplayX(x), convertToDisplayY(y)));
-    }
-
-    public void addLineTo(Path p, double x, double y) {
-        p.getElements().add(new LineTo(convertToDisplayX(x), convertToDisplayY(y)));
-    }
-
     public void addDot(double x, double y) {
         Circle dot = new Circle(convertToDisplayX(x), convertToDisplayY(y), 2, Color.YELLOW);
         group.getChildren().add(dot);
-    }
-
-    public void move(double x0, double y0, double x, double y, double time) {
-        Circle node = new Circle(convertToDisplayX(x0), convertToDisplayY(y0), 2, Color.BEIGE);
-        group.getChildren().add(node);
-        Path path = new Path(); 
-        addMoveTo(path, x0, y0);
-        addLineTo(path, x, y);
-
-        TranslateTransition theTransition = new TranslateTransition( Duration.millis(time), node);
-        theTransition.setByX( x );
-        theTransition.setByY( y );
-        theTransition.setCycleCount( 1 );
-        theTransition.setAutoReverse( false );
-        theTransition.play();
-
-        /*
-        PathTransition pathTransition = new PathTransition();
-        pathTransition.setDuration(Duration.millis(time));
-        pathTransition.setNode(node);
-        pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-        pathTransition.setCycleCount(PathTransition.INDEFINITE);
-        pathTransition.setCycleCount(1);
-        pathTransition.setAutoReverse(false);
-
-        pathTransition.setPath(path);
-        pathTransition.play();
-        */
     }
 
     public Node getNode() {
