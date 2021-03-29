@@ -48,10 +48,10 @@ public class App extends Application {
 
 
 
-        Button ip = new Button("Incline plane");
+        Button ip = new Button("Inclined plane");
             ip.setPrefSize(250, 20);
             ip.setOnAction(value -> {
-            stage.setTitle("Incline Plane");
+            stage.setTitle("Inclined Plane");
             
             stage.show();
         });
