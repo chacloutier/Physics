@@ -1,56 +1,49 @@
 
+import javafx.animation.SequentialTransition;
+
 public class parabolicMotion {
-    private double x=0;
-	private double y=0;
-	private double initialX=x;
-	private double initialY=y;
-	private double angle =45;
-	private double velocity = 80;
-	private double xVelocity =velocity * Math.cos(Math.toRadians(angle));
-	private double yVelocity= velocity * Math.sin(Math.toRadians(angle));
-	private double time;
-	private double gravity= 9.8;
-	/*	x = 0;
-		y = 0;
-		initialX = x;
-		initialY = y;
-		angle = 45;
-		velocity = 80;
-		xVelocity = velocity * Math.cos(Math.toRadians(angle));
-		yVelocity = velocity * Math.sin(Math.toRadians(angle));
-		time = 0;
-        gravity= 9.8;
-	*/
-	public double calculTime(){
-		double time=2*velocity*Math.sin(Math.toRadians(angle))/gravity;
-		this.time=time;
-		return time;
-	}
+   private Display display;
+   private Formules formules;
+   private Inputs inputs;
 
-	public double calculA(){
-		double a;
-		return -4;
-	}
-	public double calculB(){
-		double b=(velocity*velocity*Math.pow(Math.sin(Math.toRadians(angle)), 2))/(2*gravity);
-		return b;
+   public parabolicMotion(Display d, Formules f, Inputs i) {
+      display = d;
+      formules = f;
+      inputs = i;
+   }
 
-	}
-	public double calculC(){
-		double c=initialY+yVelocity*calculTime()/2+gravity/2*Math.pow((calculTime()/2),2);
-		return c;
-	}
-	public double getTime(){
-		return time;
-	}
-	
+   public void affichage() {
+      boolean noExit = true; // Si on veut pas que la balle ne dépasse pas les limites
+      int resolution = (int) inputs.getValue(Inputs.resolutionIdx); // Nombre de point par seconde
 
+      // Initialisation des variables avant d'entrer dans la boucle
+      boolean stop = false; // Si on sort du display, on arrête la boucle
+      double maxTime = formules.getTotTime(); // Temps max ou le moment où l'on sort du display / de la boucle
+      int maxIndex = (int) (maxTime * resolution); // MaxIndex de la boucle - ici seulement pour faciliter la lecture
+      double slice = maxTime * 1000 / maxIndex; // Tranche de temps en milliseconde
 
-    
-    
+      Trajet trajet = new Trajet(inputs, slice);
 
+      // Construction du tracé (path) de la trajectoire
+      for (int i = 1; i <= maxIndex && !stop; i++) {
+         double t = (double) i / resolution;
 
+         double x = formules.getX(t);
+         double y = formules.getY(t);
 
+         if (noExit && display.isOut(x, y)) {
+            maxTime = t;
+            stop = true;
+         }
 
+         if (!stop) {
+            display.addDot(x, y); // Ajoute les points du tracé
+            trajet.add(x, y);
+         }
+      }
+
+      SequentialTransition sequentialTransition = new SequentialTransition(display.getNode(), trajet.getTransitions());
+      sequentialTransition.play();
+
+   }
 }
-
