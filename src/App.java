@@ -53,7 +53,7 @@ public class App extends Application {
             ip.setOnAction(value -> {
             stage.setTitle("Inclined Plane");
             
-            stage.show();
+            new DisplayIP(stage);
         });
 
         HBox layout= new HBox();

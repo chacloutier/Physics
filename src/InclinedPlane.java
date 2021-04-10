@@ -1,3 +1,5 @@
+import javafx.scene.PointLight;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 import javafx.scene.shape.CullFace;
@@ -16,6 +18,7 @@ public class InclinedPlane{
     greenMaterial.setDiffuseColor(Color.LIGHTGREEN);
 
     public InclinedPlane(){
+        
         box = new Box(100, 100, 100);
         box.setCullFace(CullFace.NONE);
         box.setTranslateX(200);
