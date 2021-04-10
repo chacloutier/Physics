@@ -32,6 +32,6 @@ public class InclinedPlane{
         plane.setTranslateZ(0);
         plane.setRotationAxis(Rotate.Z_AXIS);
         plane.setRotate(27);
-        plane.setMaterial(greenMaterial);z
+        plane.setMaterial(greenMaterial);
     }
 }
