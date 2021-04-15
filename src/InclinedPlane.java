@@ -24,16 +24,16 @@ public class InclinedPlane {
     private FormulasIP formulas = new FormulasIP(inputs);
 
     private Box box = new Box(100, 100, 100);
-    private Box plane = new Box(2000, 100, 10);
+    private Box plane = new Box(1000, 10, 100);
     private Sphere sphere = new Sphere(20);
 
     public InclinedPlane(Stage s){
         StartInclinedPlane();
 
         stage = s;
-        group.getChildren().addAll(box, pLight);
+        group.getChildren().addAll(plane, box, pLight);
         scene = new Scene(group, 1000, 1000);
-        scene.setFill(Color.LIGHTGREEN);
+        // scene.setFill(Color.LIGHTGREEN);
         stage.setScene(scene);
         stage.show();
 
@@ -41,8 +41,8 @@ public class InclinedPlane {
         timer.start();
     }
 
-    public void StartInclinedPlane(){
-        pLight.setTranslateX(500);
+    public void StartInclinedPlane(){ //Creates the JavaFX 3D shapes
+        pLight.setTranslateX(600);
         pLight.setTranslateY(500);
         pLight.setTranslateZ(-500);
 
@@ -50,18 +50,30 @@ public class InclinedPlane {
         blueMaterial.setSpecularColor(Color.AQUA);
         blueMaterial.setDiffuseColor(Color.AQUA);
 
-        box.setTranslateX(200);
-        box.setTranslateY(400);
-        box.getTransforms().addAll(new Rotate(20, Rotate.X_AXIS), new Rotate(10, Rotate.Z_AXIS), new Rotate(30, Rotate.Y_AXIS));
+        final PhongMaterial greenMaterial = new PhongMaterial();
+        greenMaterial.setSpecularColor(Color.LAWNGREEN);
+        greenMaterial.setDiffuseColor(Color.LAWNGREEN);
+
+        box.setTranslateX(500);
+        box.setTranslateY(640);
+        box.getTransforms().addAll(new Rotate(10, Rotate.X_AXIS), new Rotate(20, Rotate.Z_AXIS), new Rotate(20, Rotate.Y_AXIS)); //Z_AXIS WILL CHANGE
         box.setMaterial(blueMaterial);
-        box.setCullFace(CullFace.BACK);   
+        box.setCullFace(CullFace.BACK);
+        
+        plane.setTranslateX(500);
+        plane.setTranslateY(700);
+        plane.getTransforms().addAll(new Rotate(10, Rotate.X_AXIS), new Rotate(20, Rotate.Z_AXIS), new Rotate(20, Rotate.Y_AXIS)); //Z_AXIS WILL CHANGE
+        plane.setMaterial(greenMaterial);
+        plane.setCullFace(CullFace.BACK);
+        
+        
     }
 
     private class MyTimer extends AnimationTimer {
 
         int count = 0;
         long previousNow = 0;
-        My3DObject test = new My3DObject(box, 50, 30, 0, 0);
+        My3DObject test = new My3DObject(box, 10, 10, 100, 0); 
 
         @Override
         public void handle(long now) {
@@ -99,8 +111,7 @@ public class InclinedPlane {
             pX = shape.getTranslateX();
             pY = shape.getTranslateY();
 
-
-            shape.setTranslateX(pX + vX * deltaT + 0.5 * aX * Math.pow(deltaT, 2));
+            shape.setTranslateX(pX + vX * deltaT + 0.5 * aX * Math.pow(deltaT, 2)); //have to change velocity for there to be acceleration
             shape.setTranslateY(pY + vY * deltaT + 0.5 * aY * Math.pow(deltaT, 2));
 
         }

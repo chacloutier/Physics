@@ -40,7 +40,7 @@ public class JavaFxTest extends Application {
     public Cylinder center;
     public Group root;
     public Polyline strap;
-    public Box box1;
+    public Box box1;6
     public Box box2;
     @Override // Override the start method in the Application class
     public void start(Stage stage) throws Exception {
