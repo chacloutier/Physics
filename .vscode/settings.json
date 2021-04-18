@@ -1,7 +1,7 @@
 {
     "java.project.referencedLibraries": {
         "include": [
-            "lib\\*\\.jar"
+            "lib\\lib\\.jar"
         ]
             // "/Users/chacloutier/Downloads/javafx-sdk-15/**/*.jar",
             // "/Users/davidlebon/Desktop/prog/javafx-sdk-15/lib/javafx-swt.jar",
