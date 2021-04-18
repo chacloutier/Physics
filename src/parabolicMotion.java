@@ -1,12 +1,12 @@
 
 import javafx.animation.SequentialTransition;
 
-public class parabolicMotion {
+public class ParabolicMotion {
    private Display display;
    private Formules formules;
    private Inputs inputs;
 
-   public parabolicMotion(Display d, Formules f, Inputs i) {
+   public ParabolicMotion(Display d, Formules f, Inputs i) {
       display = d;
       formules = f;
       inputs = i;

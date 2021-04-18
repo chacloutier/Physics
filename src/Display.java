@@ -24,7 +24,7 @@ public class Display {
 
     private Inputs inputs = new Inputs();
     private Formules formules = new Formules(inputs);
-    private parabolicMotion animation = new parabolicMotion(this, formules, inputs);
+    private ParabolicMotion animation = new ParabolicMotion(this, formules, inputs);
 
     // Objets affichés
     private Sphere sphere;

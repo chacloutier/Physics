@@ -30,29 +30,27 @@ public class App extends Application {
     public void start(Stage stage) {
 
         Button pb = new Button("Parabolic motion");
-            pb.setPrefSize(250, 20);
+        pb.setPrefSize(250, 20);
             
-            pb.setOnAction(value -> {
+        pb.setOnAction(value -> {
             stage.setTitle("Projectile motion");
 
             new Display(stage);
         });
 
         Button sp = new Button("System of pulley");
-            sp.setPrefSize(250, 20);
-            sp.setOnAction(value -> {
+        sp.setPrefSize(250, 20);
+        sp.setOnAction(value -> {
             stage.setTitle("System of pulley");
 
             stage.show();
         });
 
-
-
         Button ip = new Button("Inclined plane");
-            ip.setPrefSize(250, 20);
-            ip.setOnAction(value -> {
+        ip.setPrefSize(250, 20);
+        ip.setOnAction(value -> {
             stage.setTitle("Inclined Plane");
-            
+
             new InclinedPlane(stage);
         });
 
