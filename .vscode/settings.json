@@ -1,7 +1,7 @@
 {
     "java.project.referencedLibraries": {
         "include": [
-            "lib\\lib\\.jar"
+            "lib/**/*.jar"
         ]
             // "/Users/chacloutier/Downloads/javafx-sdk-15/**/*.jar",
             // "/Users/davidlebon/Desktop/prog/javafx-sdk-15/lib/javafx-swt.jar",
@@ -31,8 +31,5 @@
         //     "/Users/chacloutier/Downloads/javafx-sdk-15/lib/javafx.swing.jar",
         //     "/Users/chacloutier/Downloads/javafx-sdk-15/lib/javafx.web.jar"
         // ]
-    },
-    "java.project.sourcePaths": [
-        "src"
-    ]
+    }
 }

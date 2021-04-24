@@ -5,6 +5,7 @@ import javafx.scene.PointLight;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -27,7 +28,9 @@ public class InclinedPlane {
     private double velocity;
     private double acceleration;
     private double angle = 30;
+    private BorderPane pane = new BorderPane();
     private VBox textFields = new VBox(20);
+    private VBox buttonV = new VBox(20);
     private AnimationTimer timer = new MyTimer(); 
 
     private Inputs inputs = new Inputs();
@@ -193,11 +196,15 @@ public class InclinedPlane {
         tfAcceleration.setMaxWidth(80);
         tfAngle.setMaxWidth(80);
         tfVelocity.setFont(font);
+        tfAcceleration.setFont(font);
+        tfAngle.setFont(font);
 
         Label labVelocity = new Label("Velocity (m/s): ");
         Label labAcceleration = new Label("Acceleration (m/s^2): ");
         Label labAngle = new Label("Angle (˚): ");
         labVelocity.setFont(font);
+        labAcceleration.setFont(font);
+        labAngle.setFont(font);
 
         Button start = new Button("Start");
         start.setPrefSize(80, 20);
