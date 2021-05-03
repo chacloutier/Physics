@@ -39,7 +39,7 @@ public class InclinedPlane {
     private Box box = new Box(100, 100, 100);
     private Box plane = new Box(1000, 10, 100);
 
-    private My3DObject test = new My3DObject(box, 10, 10, 100, 0);
+    private My3DObject test = new My3DObject(box, 0, 0, 9.8 * Math.cos(angle), -9.8 * Math.sin(angle));
 
     public InclinedPlane(Stage s){
         StartInclinedPlane();
@@ -71,16 +71,17 @@ public class InclinedPlane {
         // box.setTranslateY(1000 - (Math.sin(angle) * 1000));
         box.setTranslateX(165);
         box.setTranslateY(420);
-        box.getTransforms().addAll(new Rotate(10, Rotate.X_AXIS), new Rotate(angle, Rotate.Z_AXIS), new Rotate(20, Rotate.Y_AXIS)); //Z_AXIS WILL CHANGE
+        box.getTransforms().addAll(new Rotate(10, Rotate.X_AXIS), new Rotate(angle, Rotate.Z_AXIS), new Rotate(0, Rotate.Y_AXIS)); //Z_AXIS WILL CHANGE
         box.setMaterial(blueMaterial);
         box.setCullFace(CullFace.BACK);
+
         
         plane.setTranslateX(500);
         plane.setTranslateY(700);
-        plane.getTransforms().addAll(new Rotate(10, Rotate.X_AXIS), new Rotate(angle, Rotate.Z_AXIS), new Rotate(20, Rotate.Y_AXIS)); //Z_AXIS WILL CHANGE
+        plane.getTransforms().addAll(new Rotate(10, Rotate.X_AXIS), new Rotate(angle, Rotate.Z_AXIS), new Rotate(0, Rotate.Y_AXIS)); //Z_AXIS WILL CHANGE
         plane.setMaterial(greenMaterial);
         plane.setCullFace(CullFace.BACK);
-        
+         
         DisplayInput();
     }
 
@@ -127,6 +128,12 @@ public class InclinedPlane {
 
             shape.setTranslateX(pX + vX * deltaT + 0.5 * aX * Math.pow(deltaT, 2)); //have to change velocity for there to be acceleration
             shape.setTranslateY(pY + vY * deltaT + 0.5 * aY * Math.pow(deltaT, 2));
+
+            double lastVx = vX;
+            vX = lastVx + aX * deltaT;
+
+            double lastVy = vY;
+            vY = lastVy + aY * deltaT;
 
         }
 
@@ -192,9 +199,11 @@ public class InclinedPlane {
         tfVelocity.setAlignment(Pos.CENTER);
         tfAcceleration.setAlignment(Pos.CENTER);
         tfAngle.setAlignment(Pos.CENTER);
+
         tfVelocity.setMaxWidth(80);
         tfAcceleration.setMaxWidth(80);
         tfAngle.setMaxWidth(80);
+
         tfVelocity.setFont(font);
         tfAcceleration.setFont(font);
         tfAngle.setFont(font);
@@ -202,6 +211,7 @@ public class InclinedPlane {
         Label labVelocity = new Label("Velocity (m/s): ");
         Label labAcceleration = new Label("Acceleration (m/s^2): ");
         Label labAngle = new Label("Angle (˚): ");
+
         labVelocity.setFont(font);
         labAcceleration.setFont(font);
         labAngle.setFont(font);
@@ -218,6 +228,10 @@ public class InclinedPlane {
         stop.setFont(font);
         stop.setOnAction(e ->{
             timer.stop();
+            box.setTranslateX(165);
+            box.setTranslateY(420);
+            test.setvX(0);
+            test.setvY(0);
         });
 
         hBoxVel.getChildren().addAll(labVelocity, tfVelocity);
