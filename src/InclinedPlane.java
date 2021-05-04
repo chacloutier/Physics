@@ -1,6 +1,7 @@
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.PerspectiveCamera;
 import javafx.scene.PointLight;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -32,53 +33,63 @@ public class InclinedPlane {
     private VBox textFields = new VBox(20);
     private VBox buttonV = new VBox(20);
     private AnimationTimer timer = new MyTimer(); 
+    private int dimensionX = 1000;
+    private int dimensionY = 700;
 
     private Inputs inputs = new Inputs();
     private FormulasIP formulas = new FormulasIP(inputs);
 
-    private Box box = new Box(100, 100, 100);
-    private Box plane = new Box(1000, 10, 100);
+    private Box box = new Box(50, 50, 50);
+    private Box plane = new Box(800, 10, 50);
 
     private My3DObject test = new My3DObject(box, 0, 0, 9.8 * Math.cos(angle), -9.8 * Math.sin(angle));
 
     public InclinedPlane(Stage s){
         StartInclinedPlane();
 
+        boolean fixedEyeAtCameraZero = false;
+        PerspectiveCamera camera = new PerspectiveCamera(fixedEyeAtCameraZero);
+        // camera.setTranslateX(0);
+        // camera.setTranslateY(0);
+        // camera.setTranslateZ(0);
+        camera.setRotationAxis(Rotate.X_AXIS);
+        camera.setRotate(-5);
+
         stage = s;
-        scene = new Scene(group, 1000, 1000);
+        scene = new Scene(group, dimensionX, dimensionY);
         scene.setFill(Color.LIGHTGREEN);
+        scene.setCamera(camera);
         stage.setScene(scene);
         stage.show();
 
     }
 
     public void StartInclinedPlane() { //Creates the JavaFX 3D shapes
-        group.getChildren().addAll(plane, box, pLight, textFields);
-
-        pLight.setTranslateX(600);
-        pLight.setTranslateY(500);
-        pLight.setTranslateZ(-500);
-
-        final PhongMaterial blueMaterial = new PhongMaterial();
-        blueMaterial.setSpecularColor(Color.AQUA);
-        blueMaterial.setDiffuseColor(Color.AQUA);
-
-        final PhongMaterial greenMaterial = new PhongMaterial();
+        group.getChildren().addAll(plane, box, pLight, textFields); 
+ 
+        pLight.setTranslateX(600); 
+        pLight.setTranslateY(500); 
+        pLight.setTranslateZ(-500); 
+ 
+        final PhongMaterial blueMaterial = new PhongMaterial(); 
+        blueMaterial.setSpecularColor(Color.AQUA); 
+        blueMaterial.setDiffuseColor(Color.AQUA); 
+ 
+        final PhongMaterial greenMaterial = new PhongMaterial(); 
         greenMaterial.setSpecularColor(Color.LAWNGREEN);
         greenMaterial.setDiffuseColor(Color.LAWNGREEN);
 
-        // box.setTranslateX(1000 - (Math.cos(angle) * 1000));
-        // box.setTranslateY(1000 - (Math.sin(angle) * 1000));
-        box.setTranslateX(165);
-        box.setTranslateY(420);
-        box.getTransforms().addAll(new Rotate(10, Rotate.X_AXIS), new Rotate(angle, Rotate.Z_AXIS), new Rotate(0, Rotate.Y_AXIS)); //Z_AXIS WILL CHANGE
+        double translateX = 600 + Math.sin(angle) * 400;
+        double translateY = 456 - Math.cos(angle) * 400;
+        box.setTranslateX(translateX);
+        box.setTranslateY(translateY);
+        box.getTransforms().addAll(new Rotate(0, Rotate.X_AXIS), new Rotate(angle, Rotate.Z_AXIS), new Rotate(0, Rotate.Y_AXIS)); //Z_AXIS WILL CHANGE
         box.setMaterial(blueMaterial);
         box.setCullFace(CullFace.BACK);
 
-        
         plane.setTranslateX(500);
-        plane.setTranslateY(700);
-        plane.getTransforms().addAll(new Rotate(10, Rotate.X_AXIS), new Rotate(angle, Rotate.Z_AXIS), new Rotate(0, Rotate.Y_AXIS)); //Z_AXIS WILL CHANGE
+        plane.setTranslateY(600);
+        plane.getTransforms().addAll(new Rotate(0, Rotate.X_AXIS), new Rotate(angle, Rotate.Z_AXIS), new Rotate(0, Rotate.Y_AXIS)); //Z_AXIS WILL CHANGE
         plane.setMaterial(greenMaterial);
         plane.setCullFace(CullFace.BACK);
          
@@ -94,6 +105,7 @@ public class InclinedPlane {
         public void handle(long now) {
             if(count != 0) {
                 double deltaT = (now - previousNow) / (Math.pow(10, 9));
+                System.out.println(deltaT);
                 test.updateState(deltaT);
             }
             count++;
@@ -125,6 +137,7 @@ public class InclinedPlane {
         public void updateState(double deltaT) {
             pX = shape.getTranslateX();
             pY = shape.getTranslateY();
+
 
             shape.setTranslateX(pX + vX * deltaT + 0.5 * aX * Math.pow(deltaT, 2)); //have to change velocity for there to be acceleration
             shape.setTranslateY(pY + vY * deltaT + 0.5 * aY * Math.pow(deltaT, 2));
@@ -241,6 +254,8 @@ public class InclinedPlane {
 
         textFields.setTranslateX(50);
         textFields.setTranslateY(50);
+        textFields.setRotationAxis(Rotate.X_AXIS);
+        textFields.setRotate(-5);
         textFields.setAlignment(Pos.CENTER);
         textFields.getChildren().addAll(hBoxVel, hBoxAcc, hBoxAng, hBoxBut);
 
