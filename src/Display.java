@@ -41,66 +41,73 @@ public class Display {
         setMarge(50);
 
         stage = s;
+        Font font = new Font("Impact", 20);
 
         // Champs Velocite
         Text labelV = new Text("Velocity");
-        labelV.setFill(Color.ANTIQUEWHITE);
+        labelV.setFont(font);
         //
         TextField velocityTxt = new TextField();
         velocityTxt.setPromptText("Velocity");
         velocityTxt.setPrefColumnCount(4);
         velocityTxt.setText(String.valueOf(inputs.getValue(Inputs.velocityIdx)));
+        velocityTxt.setFont(font);
         inputs.addTextField(Inputs.velocityIdx, velocityTxt);
 
         // Champs Gravite
         Text labelG = new Text("Gravity");
-        labelG.setFill(Color.ANTIQUEWHITE);
+        labelG.setFont(font);
         //
         TextField gravityTxt = new TextField();
         gravityTxt.setPromptText("Gravity");
         gravityTxt.setPrefColumnCount(4);
         gravityTxt.setText(String.valueOf(inputs.getValue(Inputs.gravityIdx)));
+        gravityTxt.setFont(font);
         inputs.addTextField(Inputs.gravityIdx, gravityTxt);
 
         // Champs Angle
         Text labelA = new Text("Angle");
-        labelA.setFill(Color.ANTIQUEWHITE);
+        labelA.setFont(font);
         //
         TextField angleTxt = new TextField();
         angleTxt.setPromptText("Angle");
         angleTxt.setPrefColumnCount(4);
         angleTxt.setText(String.valueOf(inputs.getValue(Inputs.angleIdx)));
+        angleTxt.setFont(font);
         inputs.addTextField(Inputs.angleIdx, angleTxt);
 
         // Champs Resolution
         Label labelR = new Label("Resolution");
-        labelR.setTextFill(Color.AQUAMARINE);
+        labelR.setFont(font);
         //
         TextField resoTxt = new TextField();
         resoTxt.setPromptText("Resolution");
         resoTxt.setPrefColumnCount(4);
         resoTxt.setText(String.valueOf(inputs.getValue(Inputs.resolutionIdx)));
+        resoTxt.setFont(font);
         inputs.addTextField(Inputs.resolutionIdx, resoTxt);
 
         // Champs Zoom
         Label labelZ = new Label("Zoom");
-        labelZ.setTextFill(Color.AQUAMARINE);
+        labelZ.setFont(font);
         //
         TextField zoomTxt = new TextField();
         zoomTxt.setPromptText("Zoom");
         zoomTxt.setPrefColumnCount(4);
         zoomTxt.setText(String.valueOf(inputs.getValue(Inputs.zoomIdx)));
+        zoomTxt.setFont(font);
         inputs.addTextField(Inputs.zoomIdx, zoomTxt);
 
         // Titre avec les paramètres
         Text titre = new Text();
-        titre.setFill(Color.BEIGE);
         titre.setText("Please enter parameters");
-        titre.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
+        titre.setFont(font);
 
         // Boutton Go
         Button go = new Button("Go");
-        go.setPrefSize(60, 20);
+        go.setPrefSize(80, 20);
+        go.setFont(font);
+        go.setStyle("-fx-background-color: #40E0D0");
         go.setOnAction(value -> {
             // On efface tout
             group.getChildren().removeAll(sphere, top, lh, lv);
@@ -123,7 +130,9 @@ public class Display {
 
         // Boutton Clear
         Button clear = new Button("Clear");
-        clear.setPrefSize(60, 20);
+        clear.setPrefSize(80, 20);
+        clear.setFont(font);
+        clear.setStyle("-fx-background-color: #40E0D0");
         clear.setOnAction(value -> {
             // On efface tout
             group.getChildren().removeAll(sphere, top, lh, lv);
@@ -149,15 +158,15 @@ public class Display {
         grid.add(resoTxt, 1, 4);
         grid.add(zoomTxt, 1, 5);
 
-        grid.add(go, 2, 1);
-        grid.add(clear, 2, 2);
+        grid.add(go, 2, 3);
+        grid.add(clear, 2, 4);
 
         group = new Group();
-        group.getChildren().addAll(grid);
+        group.getChildren().addAll(grid, App.back);
 
         // Création de la Scene
         scene = new Scene(group, dimensionX, dimensionY);
-        scene.setFill(Color.BLACK);
+        scene.setFill(Color.LIGHTGRAY);
 
         stage.setScene(getScene());
         stage.show();
@@ -233,7 +242,7 @@ public class Display {
     }
 
     public void addDot(double x, double y) {
-        Circle dot = new Circle(convertToDisplayX(x), convertToDisplayY(y), 2, Color.YELLOW);
+        Circle dot = new Circle(convertToDisplayX(x), convertToDisplayY(y), 2, Color.RED);
         group.getChildren().add(dot);
     }
 

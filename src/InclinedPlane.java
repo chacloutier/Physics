@@ -20,53 +20,55 @@ import javafx.scene.control.Label;
 import javafx.scene.text.Font;
 
 public class InclinedPlane {
-    private Group group = new Group();
+    public static Group group;
     private Scene scene;
     private Stage stage;
     private Group lightGroup = new Group();
-    private PointLight pLight = new PointLight();
-    private My3DObject shapeCube = new My3DObject();
+    private static PointLight pLight = new PointLight();
+
+    public static AnimationTimer timer = new MyTimer();
+    public static InputIP inputIP = new InputIP(timer);
+
     private double velocity;
-    private double acceleration;
-    private double angle = 30;
-    private BorderPane pane = new BorderPane();
-    private VBox textFields = new VBox(20);
-    private VBox buttonV = new VBox(20);
-    private AnimationTimer timer = new MyTimer(); 
-    private int dimensionX = 1000;
-    private int dimensionY = 700;
+    private static double acceleration = Double.parseDouble(inputIP.tfAcceleration.getText());
+    public static double angleDeg = Double.parseDouble(inputIP.tfAngle.getText());
+    private static double angleRad = Math.toRadians(angleDeg);
 
-    private Inputs inputs = new Inputs();
-    private FormulasIP formulas = new FormulasIP(inputs);
+    private static final double PLANEX = 500;
+    private static final double PLANEY = 650;
+    private static final double PLANEHALFLENGTH = 350;
+    private static final double HALFBOX = 25;
 
-    private Box box = new Box(50, 50, 50);
-    private Box plane = new Box(800, 10, 50);
+    public static double translateX = PLANEX + HALFBOX - Math.cos(angleRad) * PLANEHALFLENGTH;
+    public static double translateY = PLANEY - HALFBOX - Math.sin(angleRad) * PLANEHALFLENGTH;
 
-    private My3DObject test = new My3DObject(box, 0, 0, 9.8 * Math.cos(angle), -9.8 * Math.sin(angle));
+    public static Box box = new Box(50, 50, 50);
+    private static Box plane = new Box(700, 10, 50);
+    public static My3DObject object = new My3DObject(box, 0, 0, acceleration * Math.cos(angleRad), acceleration * Math.sin(angleRad));
+ 
 
     public InclinedPlane(Stage s){
-        StartInclinedPlane();
+
+        startInclinedPlane();
 
         boolean fixedEyeAtCameraZero = false;
         PerspectiveCamera camera = new PerspectiveCamera(fixedEyeAtCameraZero);
-        // camera.setTranslateX(0);
-        // camera.setTranslateY(0);
-        // camera.setTranslateZ(0);
         camera.setRotationAxis(Rotate.X_AXIS);
         camera.setRotate(-5);
 
         stage = s;
-        scene = new Scene(group, dimensionX, dimensionY);
-        scene.setFill(Color.LIGHTGREEN);
+        group = new Group();
+        group.getChildren().addAll(plane, box, pLight, inputIP.textFields, App.back); 
+        scene = new Scene(group, 1000, 700);
+        scene.setFill(Color.LIGHTGRAY);
         scene.setCamera(camera);
         stage.setScene(scene);
+        
         stage.show();
-
     }
 
-    public void StartInclinedPlane() { //Creates the JavaFX 3D shapes
-        group.getChildren().addAll(plane, box, pLight, textFields); 
- 
+    public static void startInclinedPlane() { //Creates the JavaFX 3D shapes
+        
         pLight.setTranslateX(600); 
         pLight.setTranslateY(500); 
         pLight.setTranslateZ(-500); 
@@ -79,24 +81,38 @@ public class InclinedPlane {
         greenMaterial.setSpecularColor(Color.LAWNGREEN);
         greenMaterial.setDiffuseColor(Color.LAWNGREEN);
 
-        double translateX = 600 + Math.sin(angle) * 400;
-        double translateY = 456 - Math.cos(angle) * 400;
+        inputIP.DisplayInput();
+
         box.setTranslateX(translateX);
         box.setTranslateY(translateY);
-        box.getTransforms().addAll(new Rotate(0, Rotate.X_AXIS), new Rotate(angle, Rotate.Z_AXIS), new Rotate(0, Rotate.Y_AXIS)); //Z_AXIS WILL CHANGE
+        box.setRotationAxis(Rotate.Z_AXIS);
+        box.setRotate(angleDeg);
         box.setMaterial(blueMaterial);
         box.setCullFace(CullFace.BACK);
 
-        plane.setTranslateX(500);
-        plane.setTranslateY(600);
-        plane.getTransforms().addAll(new Rotate(0, Rotate.X_AXIS), new Rotate(angle, Rotate.Z_AXIS), new Rotate(0, Rotate.Y_AXIS)); //Z_AXIS WILL CHANGE
+        plane.setTranslateX(PLANEX);
+        plane.setTranslateY(PLANEY);
+        plane.setRotationAxis(Rotate.Z_AXIS);
+        plane.setRotate(angleDeg);
         plane.setMaterial(greenMaterial);
         plane.setCullFace(CullFace.BACK);
-         
-        DisplayInput();
     }
 
-    private class MyTimer extends AnimationTimer {
+    public static void resetObject(){
+        angleDeg = Double.parseDouble(inputIP.tfAngle.getText());
+        angleRad = Math.toRadians(angleDeg);
+        box.setRotate(angleDeg);
+        plane.setRotate(angleDeg);
+        box.setTranslateX(PLANEX + HALFBOX - Math.cos(angleRad) * PLANEHALFLENGTH);
+        box.setTranslateY(PLANEY - HALFBOX - Math.sin(angleRad) * PLANEHALFLENGTH);
+        object.setvX(0);
+        object.setvY(0);
+        acceleration = Double.parseDouble(inputIP.tfAcceleration.getText());
+        object.setaX(acceleration * Math.cos(angleRad));
+        object.setaY(acceleration * Math.sin(angleRad));
+    }
+
+    public static class MyTimer extends AnimationTimer {
 
         int count = 0;
         long previousNow = 0;
@@ -105,15 +121,21 @@ public class InclinedPlane {
         public void handle(long now) {
             if(count != 0) {
                 double deltaT = (now - previousNow) / (Math.pow(10, 9));
-                System.out.println(deltaT);
-                test.updateState(deltaT);
+                object.updateState(deltaT);
             }
             count++;
             previousNow = now;
         }
+
+        @Override
+        public void start() {            
+            count = 0;
+            super.start();
+        }
+
     }
 
-    public class My3DObject {
+    public static class My3DObject {
 
         private Shape3D shape;
         private double pX;
@@ -138,7 +160,6 @@ public class InclinedPlane {
             pX = shape.getTranslateX();
             pY = shape.getTranslateY();
 
-
             shape.setTranslateX(pX + vX * deltaT + 0.5 * aX * Math.pow(deltaT, 2)); //have to change velocity for there to be acceleration
             shape.setTranslateY(pY + vY * deltaT + 0.5 * aY * Math.pow(deltaT, 2));
 
@@ -148,6 +169,9 @@ public class InclinedPlane {
             double lastVy = vY;
             vY = lastVy + aY * deltaT;
 
+            if(shape.getTranslateX() > PLANEX + Math.cos(angleRad) * PLANEHALFLENGTH) {
+                timer.stop();
+            }
         }
 
         public void setShape(Shape3D shape) {
@@ -191,77 +215,9 @@ public class InclinedPlane {
         }
     }
 
-    public void DisplayInput() {
+    
 
-        HBox hBoxVel = new HBox(8);
-        HBox hBoxAcc = new HBox(8);
-        HBox hBoxAng = new HBox(8);
-        HBox hBoxBut = new HBox(8);
-
-        Font font = new Font("Impact", 20);
-
-        hBoxVel.setAlignment(Pos.CENTER);
-        hBoxAcc.setAlignment(Pos.CENTER);
-        hBoxAng.setAlignment(Pos.CENTER);
-        hBoxBut.setAlignment(Pos.CENTER);
-
-        TextField tfVelocity = new TextField("10.0");
-        TextField tfAcceleration = new TextField("9.8");
-        TextField tfAngle = new TextField("30.0");
-
-        tfVelocity.setAlignment(Pos.CENTER);
-        tfAcceleration.setAlignment(Pos.CENTER);
-        tfAngle.setAlignment(Pos.CENTER);
-
-        tfVelocity.setMaxWidth(80);
-        tfAcceleration.setMaxWidth(80);
-        tfAngle.setMaxWidth(80);
-
-        tfVelocity.setFont(font);
-        tfAcceleration.setFont(font);
-        tfAngle.setFont(font);
-
-        Label labVelocity = new Label("Velocity (m/s): ");
-        Label labAcceleration = new Label("Acceleration (m/s^2): ");
-        Label labAngle = new Label("Angle (˚): ");
-
-        labVelocity.setFont(font);
-        labAcceleration.setFont(font);
-        labAngle.setFont(font);
-
-        Button start = new Button("Start");
-        start.setPrefSize(80, 20);
-        start.setFont(font);
-        start.setOnAction(e ->{
-            timer.start();
-        });
-
-        Button stop = new Button("Clear");
-        stop.setPrefSize(80, 20);
-        stop.setFont(font);
-        stop.setOnAction(e ->{
-            timer.stop();
-            box.setTranslateX(165);
-            box.setTranslateY(420);
-            test.setvX(0);
-            test.setvY(0);
-        });
-
-        hBoxVel.getChildren().addAll(labVelocity, tfVelocity);
-        hBoxAcc.getChildren().addAll(labAcceleration, tfAcceleration);
-        hBoxAng.getChildren().addAll(labAngle, tfAngle);
-        hBoxBut.getChildren().addAll(start, stop);
-
-        textFields.setTranslateX(50);
-        textFields.setTranslateY(50);
-        textFields.setRotationAxis(Rotate.X_AXIS);
-        textFields.setRotate(-5);
-        textFields.setAlignment(Pos.CENTER);
-        textFields.getChildren().addAll(hBoxVel, hBoxAcc, hBoxAng, hBoxBut);
-
-        
-
-    }
+    
 
     
 }
