@@ -1,14 +1,8 @@
 import javafx.animation.AnimationTimer;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.PointLight;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
@@ -16,22 +10,19 @@ import javafx.scene.shape.CullFace;
 import javafx.scene.shape.Shape3D;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
-import javafx.scene.control.Label;
-import javafx.scene.text.Font;
 
 public class InclinedPlane {
     public static Group group;
     private Scene scene;
     private Stage stage;
-    private Group lightGroup = new Group();
     private static PointLight pLight = new PointLight();
+    public static PerspectiveCamera camera;
 
     public static AnimationTimer timer = new MyTimer();
-    public static InputIP inputIP = new InputIP(timer);
+    public static DisplayInclinedPlane inputIP = new DisplayInclinedPlane(timer);
 
-    private double velocity;
-    private static double acceleration = Double.parseDouble(inputIP.tfAcceleration.getText());
-    public static double angleDeg = Double.parseDouble(inputIP.tfAngle.getText());
+    private static double acceleration = Double.parseDouble(DisplayInclinedPlane.tfAcceleration.getText());
+    public static double angleDeg = Double.parseDouble(DisplayInclinedPlane.tfAngle.getText());
     private static double angleRad = Math.toRadians(angleDeg);
 
     private static final double PLANEX = 500;
@@ -52,16 +43,16 @@ public class InclinedPlane {
         startInclinedPlane();
 
         boolean fixedEyeAtCameraZero = false;
-        PerspectiveCamera camera = new PerspectiveCamera(fixedEyeAtCameraZero);
+        camera = new PerspectiveCamera(fixedEyeAtCameraZero);
         camera.setRotationAxis(Rotate.X_AXIS);
         camera.setRotate(-5);
 
         stage = s;
         group = new Group();
-        group.getChildren().addAll(plane, box, pLight, inputIP.textFields, App.back); 
+        group.getChildren().addAll(plane, box, pLight, DisplayInclinedPlane.textFields, App.back, DisplayInclinedPlane.velocity); 
         scene = new Scene(group, 1000, 700);
         scene.setFill(Color.LIGHTGRAY);
-        scene.setCamera(camera);
+        scene.setCamera(camera);  
         stage.setScene(scene);
         
         stage.show();
@@ -81,7 +72,7 @@ public class InclinedPlane {
         greenMaterial.setSpecularColor(Color.LAWNGREEN);
         greenMaterial.setDiffuseColor(Color.LAWNGREEN);
 
-        inputIP.DisplayInput();
+        inputIP.DisplayIp();
 
         box.setTranslateX(translateX);
         box.setTranslateY(translateY);
@@ -99,7 +90,7 @@ public class InclinedPlane {
     }
 
     public static void resetObject(){
-        angleDeg = Double.parseDouble(inputIP.tfAngle.getText());
+        angleDeg = Double.parseDouble(DisplayInclinedPlane.tfAngle.getText());
         angleRad = Math.toRadians(angleDeg);
         box.setRotate(angleDeg);
         plane.setRotate(angleDeg);
@@ -107,9 +98,12 @@ public class InclinedPlane {
         box.setTranslateY(PLANEY - HALFBOX - Math.sin(angleRad) * PLANEHALFLENGTH);
         object.setvX(0);
         object.setvY(0);
-        acceleration = Double.parseDouble(inputIP.tfAcceleration.getText());
+        acceleration = Double.parseDouble(DisplayInclinedPlane.tfAcceleration.getText());
         object.setaX(acceleration * Math.cos(angleRad));
         object.setaY(acceleration * Math.sin(angleRad));
+        DisplayInclinedPlane.tfVelocityX.setText("0.0");
+        DisplayInclinedPlane.tfVelocityY.setText("0.0");
+        DisplayInclinedPlane.tfVelocity.setText("0.0");
     }
 
     public static class MyTimer extends AnimationTimer {
@@ -168,6 +162,13 @@ public class InclinedPlane {
 
             double lastVy = vY;
             vY = lastVy + aY * deltaT;
+
+            double vResulting = Math.pow((Math.pow(vX, 2) + Math.pow(vY, 2)), 0.5);
+
+            DisplayInclinedPlane.tfVelocityX.setText(((int) (10 * vX)) / 10.0 + "");
+            DisplayInclinedPlane.tfVelocityY.setText(((int) (10 * vY)) / 10.0 + "");
+            DisplayInclinedPlane.tfVelocity.setText(((int) (10 * vResulting)) / 10.0 + "");
+
 
             if(shape.getTranslateX() > PLANEX + Math.cos(angleRad) * PLANEHALFLENGTH) {
                 timer.stop();

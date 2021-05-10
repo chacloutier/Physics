@@ -12,8 +12,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Sphere;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -158,8 +156,8 @@ public class Display {
         grid.add(resoTxt, 1, 4);
         grid.add(zoomTxt, 1, 5);
 
-        grid.add(go, 2, 3);
-        grid.add(clear, 2, 4);
+        grid.add(go, 2, 4);
+        grid.add(clear, 2, 5);
 
         group = new Group();
         group.getChildren().addAll(grid, App.back);
