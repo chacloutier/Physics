@@ -39,7 +39,7 @@ public class App extends Application {
         title.setTranslateY(200);
 
         Button pb = new Button("Parabolic motion");
-        pb.setPrefSize(250, 20);
+        pb.setPrefSize(250, 50);
         pb.setFont(font);
             
         pb.setOnAction(value -> {
@@ -49,7 +49,7 @@ public class App extends Application {
         });
 
         Button ip = new Button("Inclined plane");
-        ip.setPrefSize(250, 20);
+        ip.setPrefSize(250, 50);
         ip.setFont(font);
 
         ip.setOnAction(value -> {
@@ -86,13 +86,22 @@ public class App extends Application {
             
         });
 
-        int random = (int)(11 * Math.random());
-        Text funFact = new Text("Fun Fact: \n" + getFunFact(random));
+        Text funFact = new Text("Fun Fact: \n" + getFunFact((int)(11 * Math.random())));
         funFact.setTextAlignment(TextAlignment.CENTER);
         funFact.setFont(new Font("Impact", 40));
         funFact.wrappingWidthProperty().bind(scene1.widthProperty().subtract(200));
         funFact.setTranslateX(100);
         funFact.setTranslateY(650);
+
+        Button anotherFact = new Button("Give me another fact!");
+        anotherFact.setFont(font);
+        anotherFact.setPrefSize(250, 20);
+        anotherFact.setTranslateX(400);
+        anotherFact.setTranslateY(900);
+
+        anotherFact.setOnAction(e -> {
+            funFact.setText("Fun Fact: \n" + getFunFact((int)(11 * Math.random())));
+        });
 
         ScaleTransition st = new ScaleTransition(Duration.millis(1500), funFact);
         st.setFromX(1);
@@ -110,7 +119,7 @@ public class App extends Application {
         fill.setAutoReverse(true);
         fill.play();
 
-        group.getChildren().addAll(layout, title, funFact);
+        group.getChildren().addAll(layout, title, funFact, anotherFact);
         
         stage.setHeight(1000);
         stage.setWidth(1000);
